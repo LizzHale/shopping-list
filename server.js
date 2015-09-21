@@ -58,7 +58,22 @@ app.post('/items', jsonParser, function(req, res){
     // send a 201 status back
     var item = storage.add(req.body.name);
     res.status(201).json(item);
-})
+});
+
+function deleteByValue(source, id) {
+    for (var i = 0; i < source.length; i++){
+        if (source[i].id == id) {
+            var deleted = source[i];
+            source.splice(i, 1);
+            return deleted;
+        };
+    };
+};
+
+app.delete('/items/:item_id', jsonParser, function(req, res){
+    var del_item = deleteByValue(storage.items, req.params.item_id);
+    res.status(204).json(del_item);
+});
 
 // If we go to '/', the frontend is served.
 // How?
