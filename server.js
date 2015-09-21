@@ -1,8 +1,11 @@
 var express = require('express');
-// body-parser module can parse JSON
 var bodyParser = require('body-parser');
 
 var jsonParser = bodyParser.json();
+var app = express();
+// express.static is middleware that
+// tells express where to find static content
+app.use(express.static('public'));
 
 // Since we don't have persistent storage yet
 // we'll use a storage object
@@ -28,37 +31,6 @@ var storage = new Storage();
 storage.add('Broad beans');
 storage.add('Tomatoes');
 storage.add('Peppers');
-
-// Create the express object
-var app = express();
-// express.static is middleware that
-// tells express where to find static content
-app.use(express.static('public'));
-
-// Our first endpoint. Serves up the list of
-// items in json format
-app.get('/items', function(req, res){
-    res.json(storage.items);
-});
-
-// the second argument tell express to use the
-// jsonParser middleware when requests for the route
-// are made
-app.post('/items', jsonParser, function(req, res){
-    // req.body is provided by jsonParser
-    // if there is no body or it is incorrectly
-    // formatted, the server will respond
-    // with a 400 status
-    if (!req.body) {
-        return res.sendStatus(400);
-    }
-
-    // otherwise, use req.body to grab the item
-    // name and add to our storage object
-    // send a 201 status back
-    var item = storage.add(req.body.name);
-    res.status(201).json(item);
-});
 
 // Given a source array and id, loop through the source items
 // if the source item's id matches the id provided. delete
@@ -88,6 +60,31 @@ function editByValue(source, id, name){
         }
     }
 }
+
+// Our first endpoint. Serves up the list of
+// items in json format
+app.get('/items', function(req, res){
+    res.json(storage.items);
+});
+
+// the second argument tell express to use the
+// jsonParser middleware when requests for the route
+// are made
+app.post('/items', jsonParser, function(req, res){
+    // req.body is provided by jsonParser
+    // if there is no body or it is incorrectly
+    // formatted, the server will respond
+    // with a 400 status
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+
+    // otherwise, use req.body to grab the item
+    // name and add to our storage object
+    // send a 201 status back
+    var item = storage.add(req.body.name);
+    res.status(201).json(item);
+});
 
 app.delete('/items/:item_id', jsonParser, function(req, res){
     // delete the item, then send the item back along with the 204 status code
