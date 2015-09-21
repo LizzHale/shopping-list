@@ -31,7 +31,7 @@ storage.add('Peppers');
 
 // Create the express object
 var app = express();
-// When express.static is middlewhere that
+// express.static is middleware that
 // tells express where to find static content
 app.use(express.static('public'));
 
@@ -78,6 +78,17 @@ function deleteByValue(source, id) {
     }
 }
 
+function editByValue(source, id, name){
+    for (var i = 0; i < source.length; i++){
+        if (source[i].id == id) {
+            source[i].name = name;
+            return source[i];
+        } else {
+            return false;
+        }
+    }
+}
+
 app.delete('/items/:item_id', jsonParser, function(req, res){
     // delete the item, then send the item back along with the 204 status code
     // if item_id was not valid, del_item will be false
@@ -86,14 +97,21 @@ app.delete('/items/:item_id', jsonParser, function(req, res){
     if (!del_item) {
         return res.status(400).json({ error: 'The item you are trying to delete does not exist'});
     } else {
+        // or 202?
         res.status(204).json(del_item);
     }
 });
 
-// TODO add a PUT endpoint that will edit an existing item name
-//app.put('/items/:item_id', jsonParser, function(req, res){
-   // console.log(req.params.item_id);
-//});
+app.put('/items/:item_id', jsonParser, function(req, res){
+    var item_name = req.body.name;
+    var edit_item = editByValue(storage.items, req.params.item_id, item_name);
+    if (!edit_item) {
+        return res.status(400).json({ error: 'The item you are trying to edit does not exist'});
+    } else {
+        // or 202?
+        res.status(204).json(edit_item);
+    }
+});
 
 // If we go to '/', the frontend is served.
 // How?
