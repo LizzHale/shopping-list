@@ -84,16 +84,16 @@ app.delete('/items/:item_id', jsonParser, function(req, res){
     var del_item = deleteByValue(storage.items, req.params.item_id);
     // use curl -X DELETE localhost:3000/items/49 to test the failure condition
     if (!del_item) {
-        return res.status(400).json('Error: The item you are trying to delete does not exist');
+        return res.status(400).json({ error: 'The item you are trying to delete does not exist'});
     } else {
         res.status(204).json(del_item);
     }
 });
 
 // TODO add a PUT endpoint that will edit an existing item name
-app.put('/items/:item_id', jsonParser, function(req, res){
-    console.log(req.params.item_id);
-});
+//app.put('/items/:item_id', jsonParser, function(req, res){
+   // console.log(req.params.item_id);
+//});
 
 // If we go to '/', the frontend is served.
 // How?
