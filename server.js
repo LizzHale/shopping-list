@@ -60,8 +60,14 @@ app.post('/items', jsonParser, function(req, res){
     res.status(201).json(item);
 });
 
+// Given a source array and id, loop through the source items
+// if the source item's id matches the id provided. delete
+// return the deleted item { name: "name", id: id }
 function deleteByValue(source, id) {
     for (var i = 0; i < source.length; i++){
+        // console.log(typeof id) is string
+        // console.log(typeof source[i].id); is number
+        // use the non-strict equality so the type will be coerced
         if (source[i].id == id) {
             var deleted = source[i];
             source.splice(i, 1);
@@ -70,7 +76,9 @@ function deleteByValue(source, id) {
     };
 };
 
+// TODO If an incorrect ID is supplied your endpoint should fail gracefully, returning a JSON error message
 app.delete('/items/:item_id', jsonParser, function(req, res){
+    // delete the item, then send the item back along with the 204 status code
     var del_item = deleteByValue(storage.items, req.params.item_id);
     res.status(204).json(del_item);
 });
