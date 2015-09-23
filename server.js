@@ -44,10 +44,9 @@ function deleteByValue(source, id) {
             var deleted = source[i];
             source.splice(i, 1);
             return deleted;
-        } else {
-            return false;
         }
     }
+    return false;
 }
 
 function editByValue(source, id, name){
@@ -55,10 +54,9 @@ function editByValue(source, id, name){
         if (source[i].id == id) {
             source[i].name = name;
             return source[i];
-        } else {
-            return false;
         }
     }
+    return false;
 }
 
 // Our first endpoint. Serves up the list of
