@@ -36,8 +36,6 @@ describe('Shopping List', function() {
                 res.body[0].name.should.equal('Broad beans');
                 res.body[1].name.should.equal('Tomatoes');
                 res.body[2].name.should.equal('Peppers');
-                //console.log("This is the GET res");
-                //console.log(res);
                 done();
             });
     });
@@ -45,7 +43,7 @@ describe('Shopping List', function() {
     it('should add an item on POST', function(done) {
         chai.request(app)
             .post('/items')
-            .send({'name': 'Kale'})
+            .send({ 'name': 'Kale' })
             .end(function(err, res) {
                 should.equal(err, null);
                 res.should.have.status(201);
@@ -71,7 +69,7 @@ describe('Shopping List', function() {
     it('should edit an item on PUT', function(done) {
         chai.request(app)
             .put('/items/0')
-            .send({ name: 'Tuna', id: 0 })
+            .send({ 'name': 'Tuna', 'id': 0 })
             .end(function(err, res){
                 should.equal(err, null);
                 res.should.have.status(200);
@@ -119,8 +117,64 @@ describe('Shopping List', function() {
             })
     });
 
-    it('should return 400 status if editing an item that does not exist');
-    it('should return 400 status code if deleting an item that does not exist');
-    it('should delete a non-zero index item in the list');
-    it('should edit a non-zero index item in the list');
+    it('should return 400 status if editing an item that does not exist', function(done){
+        chai.request(app)
+            .put('/items/55')
+            .send({ 'name': 'Tuna', 'id': 55 })
+            .end(function(err, res){
+                should.equal(err, null);
+                res.should.have.status(400);
+                done();
+            })
+    });
+    it('should return 400 status code if deleting an item that does not exist', function(done){
+        chai.request(app)
+            .del('/items/55')
+            .end(function(err, res){
+                should.equal(err, null);
+                res.should.have.status(400);
+                done();
+            })
+    });
+    it('should delete a non-zero index item in the list', function(done){
+        chai.request(app)
+            .del('/items/1')
+            .end(function(err, res){
+                should.equal(err, null);
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('object');
+                res.body.should.have.property('name');
+                res.body.should.have.property('id');
+                res.body.name.should.be.a('string');
+                res.body.id.should.be.a('number');
+                res.body.name.should.equal('Tomatoes');
+                storage.items.should.be.a('array');
+                storage.items.should.have.length(2);
+                storage.items[0].name.should.equal('Peppers');
+                storage.items[1].name.should.equal('Kale');
+                done();
+            })
+    });
+    it('should edit a non-zero index item in the list', function(done){
+        chai.request(app)
+            .put('/items/3')
+            .send({ 'name': 'Cantaloupe', 'id': 3 })
+            .end(function(err, res){
+                should.equal(err, null);
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('object');
+                res.body.should.have.property('name');
+                res.body.should.have.property('id');
+                res.body.name.should.be.a('string');
+                res.body.id.should.be.a('number');
+                res.body.name.should.equal('Cantaloupe');
+                storage.items.should.be.a('array');
+                storage.items.should.have.length(2);
+                storage.items[0].name.should.equal('Peppers');
+                storage.items[1].name.should.equal('Cantaloupe');
+                done();
+            })
+    });
 });
