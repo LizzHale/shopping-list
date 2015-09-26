@@ -114,3 +114,6 @@ app.put('/items/:item_id', jsonParser, function(req, res){
 // Look for an PORT configured in the environment
 // If not there, default to 3000
 app.listen(process.env.PORT || 3000);
+
+exports.app = app;
+exports.storage = storage;
