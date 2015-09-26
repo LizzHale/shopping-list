@@ -1,0 +1,47 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-size: 2em;
+    color: #1E2835;
+    background-color: #F8F8F8;
+}
+.light {
+    color: #C7CACD;
+}
+a, a:active, a:hover, a:visited {
+    color: #F37A7B;
+}
+div#main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+input {
+    width: 400px;
+    border: 0;
+    background-color: #F8F8F8;
+}
+div>input {
+    width: 400px;
+}
+li input {
+    width: 380;
+}
+div>input, li {
+    border: 2px solid #C7CACD;
+    padding: 10px;
+}
+form, ul {
+    margin: 0;
+}
+ul {
+    padding-left: 0;
+}
+li {
+    width: 400px;
+    list-style-type: none;
+}
+div.delete {
+    float: right;
+}
