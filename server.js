@@ -93,7 +93,7 @@ app.delete('/items/:item_id', jsonParser, function(req, res){
         return res.status(400).json({ error: 'The item you are trying to delete does not exist'});
     } else {
         // or 202?
-        res.status(204).json(del_item);
+        res.status(200).json(del_item);
     }
 });
 
@@ -104,7 +104,7 @@ app.put('/items/:item_id', jsonParser, function(req, res){
         return res.status(400).json({ error: 'The item you are trying to edit does not exist'});
     } else {
         // or 202?
-        res.status(204).json(edit_item);
+        res.status(200).json(edit_item);
     }
 });
 

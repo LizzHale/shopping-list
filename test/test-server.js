@@ -74,11 +74,14 @@ describe('Shopping List', function() {
             .send({ name: 'Tuna', id: 0 })
             .end(function(err, res){
                 should.equal(err, null);
-                res.should.have.status(204);
-                //console.log("This is the PUT res:");
-                //console.log(res);
-                // There seems to be no content-type in the response
-                // res.should.be.json;
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('object');
+                res.body.should.have.property('name');
+                res.body.should.have.property('id');
+                res.body.name.should.be.a('string');
+                res.body.id.should.be.a('number');
+                res.body.name.should.equal('Tuna');
                 storage.items.should.be.a('array');
                 storage.items.should.have.length(4);
                 storage.items[0].should.be.a('object');
@@ -99,7 +102,14 @@ describe('Shopping List', function() {
             .del('/items/0')
             .end(function(err, res){
                 should.equal(err, null);
-                res.should.have.status(204);
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('object');
+                res.body.should.have.property('name');
+                res.body.should.have.property('id');
+                res.body.name.should.be.a('string');
+                res.body.id.should.be.a('number');
+                res.body.name.should.equal('Tuna');
                 storage.items.should.be.a('array');
                 storage.items.should.have.length(3);
                 storage.items[0].name.should.equal('Tomatoes');
