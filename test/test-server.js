@@ -36,6 +36,8 @@ describe('Shopping List', function() {
                 res.body[0].name.should.equal('Broad beans');
                 res.body[1].name.should.equal('Tomatoes');
                 res.body[2].name.should.equal('Peppers');
+                //console.log("This is the GET res");
+                //console.log(res);
                 done();
             });
     });
@@ -66,8 +68,47 @@ describe('Shopping List', function() {
             });
     });
 
-    it('should edit an item on PUT');
-    it('should delete an item on DELETE');
+    it('should edit an item on PUT', function(done) {
+        chai.request(app)
+            .put('/items/0')
+            .send({ name: 'Tuna', id: 0 })
+            .end(function(err, res){
+                should.equal(err, null);
+                res.should.have.status(204);
+                //console.log("This is the PUT res:");
+                //console.log(res);
+                // There seems to be no content-type in the response
+                // res.should.be.json;
+                storage.items.should.be.a('array');
+                storage.items.should.have.length(4);
+                storage.items[0].should.be.a('object');
+                storage.items[0].should.have.property('id');
+                storage.items[0].should.have.property('name');
+                storage.items[0].id.should.be.a('number');
+                storage.items[0].name.should.be.a('string');
+                storage.items[0].name.should.equal('Tuna');
+                storage.items[1].name.should.equal('Tomatoes');
+                storage.items[2].name.should.equal('Peppers');
+                storage.items[3].name.should.equal('Kale');
+                done();
+            })
+    });
+
+    it('should delete an item on DELETE', function(done) {
+        chai.request(app)
+            .del('/items/0')
+            .end(function(err, res){
+                should.equal(err, null);
+                res.should.have.status(204);
+                storage.items.should.be.a('array');
+                storage.items.should.have.length(3);
+                storage.items[0].name.should.equal('Tomatoes');
+                storage.items[1].name.should.equal('Peppers');
+                storage.items[2].name.should.equal('Kale');
+                done();
+            })
+    });
+
     it('should return 400 status if editing an item that does not exist');
     it('should return 400 status code if deleting an item that does not exist');
     it('should delete a non-zero index item in the list');
