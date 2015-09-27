@@ -23,3 +23,13 @@ exports.list = function(callback, errback) {
     });
 };
 
+exports.update = function(id, name, callback, errback) {
+    Item.findOneAndUpdate({_id: id}, {name: name}, function(err, item) {
+        if (err) {
+            errback(err);
+            return;
+        }
+        callback(item);
+    });
+};
+
