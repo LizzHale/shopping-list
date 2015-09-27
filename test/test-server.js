@@ -71,7 +71,6 @@ describe('Shopping List', function() {
                 done();
             });
     });
-    // TODO The response from the PUT request is currently returning the original item and not the updated record
     it('should edit an item on PUT', function(done) {
         chai.request(app)
             .get('/items')
@@ -88,7 +87,7 @@ describe('Shopping List', function() {
                         res.body.should.have.property('_id');
                         res.body.name.should.be.a('string');
                         //res.body.id.should.be.a('number');
-                        //res.body.name.should.equal('Tuna');
+                        res.body.name.should.equal('Tuna');
                         //storage.items.should.be.a('array');
                         //storage.items.should.have.length(4);
                         //storage.items[0].should.be.a('object');

@@ -24,7 +24,8 @@ exports.list = function(callback, errback) {
 };
 
 exports.update = function(id, name, callback, errback) {
-    Item.findOneAndUpdate({_id: id}, {name: name}, function(err, item) {
+    // setting the new option to true will return the modified document rather than the original
+    Item.findOneAndUpdate({_id: id}, {name: name}, { new: true }, function(err, item) {
         if (err) {
             errback(err);
             return;
