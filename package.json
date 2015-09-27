@@ -10,7 +10,8 @@
   "license": "None",
   "dependencies": {
     "express": "^4.13.3",
-    "body-parser": "^1.14.0"
+    "body-parser": "^1.14.0",
+    "mongoose": "^4.1.8"
   },
   "devDependencies": {
     "chai": "^3.3.0",
