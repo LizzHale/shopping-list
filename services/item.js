@@ -33,3 +33,14 @@ exports.update = function(id, name, callback, errback) {
     });
 };
 
+exports.delete = function(id, callback, errback) {
+    Item.findByIdAndRemove(id, function(err, item) {
+        if (err) {
+            console.log(err);
+            errback(err);
+            return;
+        }
+        callback(item);
+    });
+};
+
