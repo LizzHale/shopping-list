@@ -24,6 +24,7 @@ describe('Shopping List', function() {
             done();
         });
     });
+    // TODO: Find a way to verify the ObjectId
     it('should list items on GET', function (done) {
         chai.request(app)
             .get('/items')
@@ -44,6 +45,7 @@ describe('Shopping List', function() {
                 done();
             });
     });
+    // TODO verify that the record has been updated in the database
     it('should add an item on POST', function(done) {
         chai.request(app)
             .post('/items')
@@ -69,6 +71,7 @@ describe('Shopping List', function() {
                 done();
             });
     });
+    // TODO The response from the PUT request is currently returning the original item and not the updated record
     it('should edit an item on PUT', function(done) {
         chai.request(app)
             .get('/items')
@@ -85,8 +88,6 @@ describe('Shopping List', function() {
                         res.body.should.have.property('_id');
                         res.body.name.should.be.a('string');
                         //res.body.id.should.be.a('number');
-                        // Right now the response is actually returning the original item
-                        // but the database is being updated.
                         //res.body.name.should.equal('Tuna');
                         //storage.items.should.be.a('array');
                         //storage.items.should.have.length(4);
