@@ -19,6 +19,7 @@ var app = server.app;
 chai.use(chaiHttp);
 
 describe('Shopping List', function() {
+    // TODO consider using beforeEach() so that the seeding runs before each test
     before(function (done) {
         seed.run(function () {
             done();
@@ -158,6 +159,7 @@ describe('Shopping List', function() {
                 done();
             });
     });
+    //TODO consider using afterEach() so that the database is cleaned after each test case
     after(function (done) {
         Item.remove(function () {
             done();
