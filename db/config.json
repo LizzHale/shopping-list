@@ -1,6 +1,7 @@
 {
   "production": {
-    "url": "mongodb://heroku:4dirqdyNtNwwPBqphUusKQH-A4L5e6vRBGi5Hz1PJVejd8C5Yb5BEEjBYdCf6GrbqyAii9TApaYrDiq3iZqY0g@candidate.52.mongolayer.com:10431,candidate.53.mongolayer.com:10030/app41693356"
+    "url": "mongodb://heroku_3z1z8f74:mt8g1l6gf9d8iml7osip14ha2i@ds051843.mongolab.com:51843/heroku_3z1z8f74
+    "
   },
   "test": {
     "url": "mongodb://localhost/shopping-list-test"
