@@ -47,7 +47,6 @@ describe('Shopping List', function() {
                 done();
             });
     });
-    // TODO verify that the record has been updated in the database
     it('should add an item on POST', function(done) {
         chai.request(app)
             .post('/items')
@@ -62,17 +61,20 @@ describe('Shopping List', function() {
                 res.body.name.should.be.a('string');
                 res.body._id.should.be.a('string');
                 res.body.name.should.equal('Kale');
-                //var list = blah.list(function(items){console.log(items)});
-                //console.log(list);
-                //storage.items.should.be.a('array');
-                //storage.items.should.have.length(4);
-                //storage.items[3].should.be.a('object');
-                //storage.items[3].should.have.property('id');
-                //storage.items[3].should.have.property('name');
-                //storage.items[3].id.should.be.a('number');
-                //storage.items[3].name.should.be.a('string');
-                //storage.items[3].name.should.equal('Kale');
-                done();
+                // Send another get request to verify the database records
+                chai.request(app)
+                    .get('/items')
+                    .end(function(err, res) {
+                        res.body.should.be.a('array');
+                        res.body.should.have.length(4);
+                        res.body[0].name.should.equal('Broad beans');
+                        res.body[1].name.should.equal('Tomatoes');
+                        res.body[2].name.should.equal('Peppers');
+                        res.body[3].name.should.equal('Kale');
+                        res.body[3].should.have.property('_id');
+                        res.body[3].should.have.property('name');
+                        done();
+                    });
             });
     });
     it('should edit an item on PUT', function(done) {
@@ -92,18 +94,19 @@ describe('Shopping List', function() {
                         res.body.name.should.be.a('string');
                         res.body._id.should.be.a('string');
                         res.body.name.should.equal('Tuna');
-                        //storage.items.should.be.a('array');
-                        //storage.items.should.have.length(4);
-                        //storage.items[0].should.be.a('object');
-                        //storage.items[0].should.have.property('id');
-                        //storage.items[0].should.have.property('name');
-                        //storage.items[0].id.should.be.a('number');
-                        //storage.items[0].name.should.be.a('string');
-                        //storage.items[0].name.should.equal('Tuna');
-                        //storage.items[1].name.should.equal('Tomatoes');
-                        //storage.items[2].name.should.equal('Peppers');
-                        //storage.items[3].name.should.equal('Kale');
-                        done();
+                        chai.request(app)
+                            .get('/items')
+                            .end(function(err, res) {
+                                res.body.should.be.a('array');
+                                res.body.should.have.length(4);
+                                res.body[0].name.should.equal('Tuna');
+                                res.body[1].name.should.equal('Tomatoes');
+                                res.body[2].name.should.equal('Peppers');
+                                res.body[3].name.should.equal('Kale');
+                                res.body[3].should.have.property('_id');
+                                res.body[3].should.have.property('name');
+                                done();
+                            });
                     });
             });
     });
@@ -123,12 +126,16 @@ describe('Shopping List', function() {
                         res.body.name.should.be.a('string');
                         res.body._id.should.be.a('string');
                         res.body.name.should.equal('Tuna');
-                        //storage.items.should.be.a('array');
-                        //storage.items.should.have.length(3);
-                        //storage.items[0].name.should.equal('Tomatoes');
-                        //storage.items[1].name.should.equal('Peppers');
-                        //storage.items[2].name.should.equal('Kale');
-                        done();
+                        chai.request(app)
+                            .get('/items')
+                            .end(function(err, res) {
+                                res.body.should.be.a('array');
+                                res.body.should.have.length(3);
+                                res.body[0].name.should.equal('Tomatoes');
+                                res.body[1].name.should.equal('Peppers');
+                                res.body[2].name.should.equal('Kale');
+                                done();
+                            });
                     });
             });
     });
