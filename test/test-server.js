@@ -5,6 +5,7 @@ global.environment = 'test';
 var server = require('../server.js');
 var Item = require('../models/item');
 var seed = require('../db/seed');
+var blah = require('../services/item.js');
 
 // Chai allows you to use different syntax to do assertions
 // We're using "should"
@@ -24,7 +25,6 @@ describe('Shopping List', function() {
             done();
         });
     });
-    // TODO: Find a way to verify the ObjectId
     it('should list items on GET', function (done) {
         chai.request(app)
             .get('/items')
@@ -37,7 +37,10 @@ describe('Shopping List', function() {
                 res.body[0].should.have.property('_id');
                 res.body[0].should.have.property('name');
                 // The _id (ObjectId) is a 12-byte BSON type
-                // res.body[0]._id.should.be.a('number');
+                // Although the database record does not appear to
+                // store the _id as a string,
+                // the response returns a string
+                res.body[0]._id.should.be.a('string');
                 res.body[0].name.should.be.a('string');
                 res.body[0].name.should.equal('Broad beans');
                 res.body[1].name.should.equal('Tomatoes');
@@ -58,8 +61,10 @@ describe('Shopping List', function() {
                 res.body.should.have.property('name');
                 res.body.should.have.property('_id');
                 res.body.name.should.be.a('string');
-                //res.body.id.should.be.a('number');
+                res.body._id.should.be.a('string');
                 res.body.name.should.equal('Kale');
+                //var list = blah.list(function(items){console.log(items)});
+                //console.log(list);
                 //storage.items.should.be.a('array');
                 //storage.items.should.have.length(4);
                 //storage.items[3].should.be.a('object');
@@ -86,7 +91,7 @@ describe('Shopping List', function() {
                         res.body.should.have.property('name');
                         res.body.should.have.property('_id');
                         res.body.name.should.be.a('string');
-                        //res.body.id.should.be.a('number');
+                        res.body._id.should.be.a('string');
                         res.body.name.should.equal('Tuna');
                         //storage.items.should.be.a('array');
                         //storage.items.should.have.length(4);
@@ -117,7 +122,7 @@ describe('Shopping List', function() {
                         res.body.should.have.property('name');
                         res.body.should.have.property('_id');
                         res.body.name.should.be.a('string');
-                        //res.body._id.should.be.a('number');
+                        res.body._id.should.be.a('string');
                         res.body.name.should.equal('Tuna');
                         //storage.items.should.be.a('array');
                         //storage.items.should.have.length(3);
