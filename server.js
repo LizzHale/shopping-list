@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var itemRoutes = require('./routes/item');
 // var jsonParser = bodyParser.json();
 var app = express();
+var port = process.env.PORT || 8080;
 // express.static is middleware that
 // tells express where to find static content
 app.use(express.static('public'));
@@ -18,8 +19,8 @@ app.use('*', function(req, res) {
     res.status(404).json({ message: 'Not Found' });
 });
 
-app.listen(5000, function() {
-    console.log('Listening on port 5000');
+app.listen(port, function() {
+    console.log('Listening on port ' + port );
 });
 
 exports.app = app;
