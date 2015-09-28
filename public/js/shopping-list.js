@@ -21,7 +21,7 @@ ShoppingList.prototype.onAddInputKeydown = function(event) {
     }
     var input = $(event.target);
     var value = input.val().trim();
-    if (value != '') {
+    if (value !== '') {
         this.addItem(value);
     }
     input.val('');
@@ -52,7 +52,7 @@ ShoppingList.prototype.onEditFocusOut = function(event) {
     var input = item.children('input');
     var name = display.children('.name');
     var value = input.val().trim();
-    if (value != '') {
+    if (value !== '') {
         this.editItem(id, value);
         name.text(value);
     }
