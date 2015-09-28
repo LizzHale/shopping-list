@@ -1,7 +1,4 @@
 {
-  "production": {
-    "url": "mongodb://heroku_3z1z8f74:mt8g1l6gf9d8iml7osip14ha2i@ds051843.mongolab.com:51843/heroku_3z1z8f74"
-  },
   "test": {
     "url": "mongodb://localhost/shopping-list-test"
   },

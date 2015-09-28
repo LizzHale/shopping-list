@@ -4,6 +4,10 @@ var env = require('../environment');
 var config = require('./config');
 
 // What environment am I running?
-console.log(config[env].url);
-
-mongoose.connect(config[env].url);
+console.log(env);
+console.log(process.env.MONGOLAB_URI);
+if (env == 'production') {
+    mongoose.connect(process.env.MONGOLAB_URI);
+} else {
+    mongoose.connect(config[env].url);
+}
