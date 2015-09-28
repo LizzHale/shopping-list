@@ -5,7 +5,6 @@ global.environment = 'test';
 var server = require('../server.js');
 var Item = require('../models/item');
 var seed = require('../db/seed');
-var blah = require('../services/item.js');
 
 // Chai allows you to use different syntax to do assertions
 // We're using "should"
