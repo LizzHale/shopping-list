@@ -3,9 +3,7 @@ var mongoose = require('mongoose');
 var env = require('../environment');
 var config = require('./config');
 
-// What environment am I running?
-console.log(env);
-console.log(process.env.MONGOLAB_URI);
+// Use an environment variable for the production database so it isn't exposed
 if (env == 'production') {
     mongoose.connect(process.env.MONGOLAB_URI);
 } else {
