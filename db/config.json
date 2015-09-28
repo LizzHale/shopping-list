@@ -1,6 +1,6 @@
 {
   "production": {
-    "url": "mongodb://localhost/shopping-list"
+    "url": "mongodb://heroku:4dirqdyNtNwwPBqphUusKQH-A4L5e6vRBGi5Hz1PJVejd8C5Yb5BEEjBYdCf6GrbqyAii9TApaYrDiq3iZqY0g@candidate.52.mongolayer.com:10431,candidate.53.mongolayer.com:10030/app41693356"
   },
   "test": {
     "url": "mongodb://localhost/shopping-list-test"
