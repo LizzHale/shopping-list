@@ -19,8 +19,7 @@ var app = server.app;
 chai.use(chaiHttp);
 
 describe('Shopping List', function() {
-    // TODO consider using beforeEach() so that the seeding runs before each test
-    before(function (done) {
+    beforeEach(function (done) {
         seed.run(function () {
             done();
         });
@@ -63,6 +62,7 @@ describe('Shopping List', function() {
                 res.body._id.should.be.a('string');
                 res.body.name.should.equal('Kale');
                 // Send another get request to verify the database records
+                // TODO send query to database instead of nested GET request; use to.be.an.instanceof()
                 chai.request(app)
                     .get('/items')
                     .end(function(err, res) {
@@ -99,13 +99,12 @@ describe('Shopping List', function() {
                             .get('/items')
                             .end(function(err, res) {
                                 res.body.should.be.a('array');
-                                res.body.should.have.length(4);
+                                res.body.should.have.length(3);
                                 res.body[0].name.should.equal('Tuna');
+                                res.body[0].should.have.property('_id');
+                                res.body[0].should.have.property('name');
                                 res.body[1].name.should.equal('Tomatoes');
                                 res.body[2].name.should.equal('Peppers');
-                                res.body[3].name.should.equal('Kale');
-                                res.body[3].should.have.property('_id');
-                                res.body[3].should.have.property('name');
                                 done();
                             });
                     });
@@ -126,15 +125,14 @@ describe('Shopping List', function() {
                         res.body.should.have.property('_id');
                         res.body.name.should.be.a('string');
                         res.body._id.should.be.a('string');
-                        res.body.name.should.equal('Tuna');
+                        res.body.name.should.equal('Broad beans');
                         chai.request(app)
                             .get('/items')
                             .end(function(err, res) {
                                 res.body.should.be.a('array');
-                                res.body.should.have.length(3);
+                                res.body.should.have.length(2);
                                 res.body[0].name.should.equal('Tomatoes');
                                 res.body[1].name.should.equal('Peppers');
-                                res.body[2].name.should.equal('Kale');
                                 done();
                             });
                     });
@@ -159,8 +157,7 @@ describe('Shopping List', function() {
                 done();
             });
     });
-    //TODO consider using afterEach() so that the database is cleaned after each test case
-    after(function (done) {
+    afterEach(function (done) {
         Item.remove(function () {
             done();
         });
