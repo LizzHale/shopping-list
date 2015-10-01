@@ -14,6 +14,17 @@ var should = require('chai').should();
 // app comes from the express app function
 var app = server.app;
 
+// For use during the tests to avoid nesting another get request
+function retrieveCurrentDatabase(callback) {
+    Item.find(function(err, items) {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, items);
+        }
+    });
+};
+
 // Tell chai to use the Chai HTTP plugin
 // to allow us to make HTTP requests
 chai.use(chaiHttp);
@@ -61,25 +72,27 @@ describe('Shopping List', function() {
                 res.body.name.should.be.a('string');
                 res.body._id.should.be.a('string');
                 res.body.name.should.equal('Kale');
-                // Send another get request to verify the database records
-                // TODO send query to database instead of nested GET request; use to.be.an.instanceof()
-                chai.request(app)
-                    .get('/items')
-                    .end(function(err, res) {
-                        res.body.should.be.a('array');
-                        res.body.should.have.length(4);
-                        res.body[0].name.should.equal('Broad beans');
-                        res.body[1].name.should.equal('Tomatoes');
-                        res.body[2].name.should.equal('Peppers');
-                        res.body[3].name.should.equal('Kale');
-                        res.body[3].should.have.property('_id');
-                        res.body[3].should.have.property('name');
-                        done();
-                    });
+                // Verify the database contents using a callback function
+                retrieveCurrentDatabase(function(err, items) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    items.should.be.a('array');
+                    items.should.have.length('4');
+                    items[0].name.should.equal('Broad beans');
+                    items[1].name.should.equal('Tomatoes');
+                    items[2].name.should.equal('Peppers');
+                    items[3].name.should.equal('Kale');
+                    items[3].should.have.property('_id');
+                    items[3].should.have.property('name');
+                });
+                done();
             });
     });
     it('should edit an item on PUT', function(done) {
         chai.request(app)
+            // Using a GET request to grab the id for one of the items for use in the PUT request test
+            // TODO find alternative to nested chai.requests to avoid uninformative failures (i.e. broken GET request)
             .get('/items')
             .end(function(err, res) {
                 chai.request(app)
@@ -95,18 +108,19 @@ describe('Shopping List', function() {
                         res.body.name.should.be.a('string');
                         res.body._id.should.be.a('string');
                         res.body.name.should.equal('Tuna');
-                        chai.request(app)
-                            .get('/items')
-                            .end(function(err, res) {
-                                res.body.should.be.a('array');
-                                res.body.should.have.length(3);
-                                res.body[0].name.should.equal('Tuna');
-                                res.body[0].should.have.property('_id');
-                                res.body[0].should.have.property('name');
-                                res.body[1].name.should.equal('Tomatoes');
-                                res.body[2].name.should.equal('Peppers');
-                                done();
-                            });
+                        retrieveCurrentDatabase(function(err, items) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            items.should.be.a('array');
+                            items.should.have.length('3');
+                            items[0].name.should.equal('Tuna');
+                            items[0].should.have.property('_id');
+                            items[0].should.have.property('name');
+                            items[1].name.should.equal('Tomatoes');
+                            items[2].name.should.equal('Peppers');
+                        });
+                        done();
                     });
             });
     });
@@ -126,15 +140,16 @@ describe('Shopping List', function() {
                         res.body.name.should.be.a('string');
                         res.body._id.should.be.a('string');
                         res.body.name.should.equal('Broad beans');
-                        chai.request(app)
-                            .get('/items')
-                            .end(function(err, res) {
-                                res.body.should.be.a('array');
-                                res.body.should.have.length(2);
-                                res.body[0].name.should.equal('Tomatoes');
-                                res.body[1].name.should.equal('Peppers');
-                                done();
-                            });
+                        retrieveCurrentDatabase(function(err, items) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            items.should.be.a('array');
+                            items.should.have.length(2);
+                            items[0].name.should.equal('Tomatoes');
+                            items[1].name.should.equal('Peppers');
+                        });
+                        done();
                     });
             });
     });
